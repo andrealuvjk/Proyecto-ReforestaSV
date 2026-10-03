@@ -12,6 +12,13 @@ plantados durante campañas de reforestación en la comunidad, facilitando así 
 - Saira Stephanie Melgar Abrego
 - Víctor Javier Vásquez Ceron
 
+**Descripción de la problematica**
+El Cerro de Nejapa y sus zonas aledañas enfrentan problemas de degradación ambiental relacionados con la pérdida de cobertura vegetal, la erosión del suelo y la presión sobre los recursos naturales. La pérdida de vegetación puede contribuir a una mayor vulnerabilidad del terreno ante procesos de erosión, deslizamientos e inundaciones, además de afectar la biodiversidad y la capacidad del suelo para retener e infiltrar agua, ante esta situación las campañas de reforestación se suman como una medida protectora que puede ayudar ante la problemática, sin embargo, la falta de un registro organizado dificulta conocer la cantidad de árboles plantados, su especie, ubicación, responsable de su cuidado y estado actual, lo que puede limitar el seguimiento de las actividades de mantenimiento y la identificación de árboles dañados o perdidos. 
+
+**Beneficiaros**
+Comité Ambiental Comunitario del Cerro de Nejapa, comunidades aledañas y instituciones como ADESCO, ya que las campañas de reforestación son mayormente coordinados por estas organizaciones. 
+
+
 ## Requesitos funcionales.
 **Requisitos:**
 - El sistema permitirá registrar diferentes tipos de árboles.
