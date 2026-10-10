@@ -41,3 +41,53 @@ Comité Ambiental Comunitario del Cerro de Nejapa, comunidades aledañas y insti
 - La información relacionada con los usuarios será protegida limitando el acceso a esos datos.
 
 
+## Clases del Sistema de Reforestación
+
+1. CampaniaReforestacion
+
+Responsabilidad: Gestionar las campañas de siembra y coordinar los lotes de árboles asignados.
+
+* Atributos: id, nombre, titulo, fecha_inicio, fecha_fin.
+* Métodos: registrarCampaña(), actualizarDatos(), consultarInventario().
+* Relaciones:
+    * Se asocia con Usuario, quien gestiona la campaña.
+    * Tiene una composición con Inventario, cuyos lotes pertenecen a una campaña.
+
+2. Inventario
+
+Responsabilidad: Controlar los lotes de árboles, su cantidad, estado y ubicación.
+
+* Atributos: id, cantidad, estado, img_url.
+* Métodos: registrarGrupo(), actualizarCantidad(), actualizarEstado(), consultarInventario().
+* Relaciones:
+    * Pertenece a una CampaniaReforestacion.
+    * Se asocia con un Arbol y una Ubicacion.
+    * Tiene una composición con Mantenimiento, que registra los cuidados del lote.
+
+3. Arbol
+
+Responsabilidad: Mantener el catálogo de árboles disponibles para la siembra.
+
+* Atributos: id, nombre.
+* Métodos: registrarArbol(), actualizarDatos().
+* Relaciones:
+    * Se asocia con una Especie.
+    * Puede estar relacionado con varios registros de Inventario.
+
+4. Mantenimiento
+
+Responsabilidad: Registrar las actividades de cuidado de los lotes de árboles, como riego e inspecciones.
+
+* Atributos: id, fecha, descripcion.
+* Métodos: registrarMantenimiento(), consultarMantenimiento().
+* Relaciones:
+    * Pertenece a un único registro de Inventario.
+
+5. Ubicacion
+
+Responsabilidad: Administrar las zonas y ubicaciones físicas donde se encuentran los lotes de árboles.
+
+* Atributos: id, zona, ubicacion.
+* Métodos: registrarUbicacion(), actualizarUbicacion().
+* Relaciones:
+    * Puede estar asociada con varios registros de Inventario
