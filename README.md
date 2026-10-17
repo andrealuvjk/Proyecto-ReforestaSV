@@ -12,9 +12,10 @@ plantados durante campañas de reforestación en la comunidad, facilitando así 
 - Saira Stephanie Melgar Abrego
 - Víctor Javier Vásquez Ceron
 
+
 Requisitos
-Python instalado
-Git instalago
+-Python instalado
+-Git instalago
 
 Instalación
 1.Clonar el repositorio
