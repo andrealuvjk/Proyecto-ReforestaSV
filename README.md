@@ -12,17 +12,21 @@ plantados durante campañas de reforestación en la comunidad, facilitando así 
 - Saira Stephanie Melgar Abrego
 - Víctor Javier Vásquez Ceron
 
-** Requisitos
+Requisitos
 Python instalado
 Git instalago
 
-**Instalación
+Instalación
 1.Clonar el repositorio
+
 2.Entrar a la carpeta del proyecto
+
 3.Crear un entorno virtual:
 python -m venv .venv
+
 4.Activar el entorno virtual
 .venv\Scripts\activate
+
 5.Instalar las dependencias
 pip install -r requeriments.txt
 
