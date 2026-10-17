@@ -1,4 +1,10 @@
-asgiref==3.12.1
-Django==6.1.2
-sqlparse==0.6.0
-tzdata==2026.5
+HEAD
+asgiref3.12.1
+Django6.1.2
+sqlparse0.6.0
+tzdata2026.5
+asgiref3.12.1
+Django6.1.2
+sqlparse0.6.0
+tzdata2026.5
+87e2f56a51829e60fdcc2a2a1cad39144f7898ea
