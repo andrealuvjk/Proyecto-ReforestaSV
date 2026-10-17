@@ -91,11 +91,11 @@ Responsabilidad: Administrar las zonas y ubicaciones físicas donde se encuentra
     * Puede estar asociada con varios registros de Inventario
 
 
-**Requisitos:**
+##Requisitos:
 -Python instalado
 -Git instalado
 
-**Instrucciones básicas para instalar y ejecutar la aplicación:**
+##Instrucciones básicas para instalar y ejecutar la aplicación:
 
 1.Clonar el repositorio
 
