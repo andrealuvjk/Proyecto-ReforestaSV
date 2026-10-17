@@ -13,11 +13,11 @@ plantados durante campañas de reforestación en la comunidad, facilitando así 
 - Víctor Javier Vásquez Ceron
 
 
-Requisitos
+**Requisitos:**
 -Python instalado
 -Git instalago
 
-Instalación
+**Instalación:**
 1.Clonar el repositorio
 
 2.Entrar a la carpeta del proyecto
