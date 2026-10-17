@@ -15,9 +15,10 @@ plantados durante campañas de reforestación en la comunidad, facilitando así 
 
 **Requisitos:**
 -Python instalado
--Git instalago
+-Git instalado
 
 **Instalación:**
+
 1.Clonar el repositorio
 
 2.Entrar a la carpeta del proyecto
