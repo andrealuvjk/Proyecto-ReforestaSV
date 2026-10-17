@@ -17,7 +17,7 @@ plantados durante campañas de reforestación en la comunidad, facilitando así 
 -Python instalado
 -Git instalado
 
-**Instalación:**
+**Instrucciones básicas para instalar y ejecutar la aplicación:**
 
 1.Clonar el repositorio
 
