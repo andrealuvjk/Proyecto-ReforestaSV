@@ -37,9 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'reforestasv',
+    'campanias',
+    'mantenimientos',
+    'inventarios',
+    'usuarios'
 ]
-AUTH_USER_MODEL = 'reforestasv.Usuario'
+AUTH_USER_MODEL = 'usuarios.Usuario'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
