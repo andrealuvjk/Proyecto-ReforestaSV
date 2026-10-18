@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'reforestasv',
 ]
+AUTH_USER_MODEL = 'reforestasv.Usuario'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
