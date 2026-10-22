@@ -15,6 +15,15 @@ class Especie(models.Model):
         """Calcula el número total de árboles de esta especie registrados en todos los inventarios."""
         return sum(item.cantidad for item in self.inventarios.all())
 
+    # Método propio: Conteo global real en campo
+    def conteo_global_por_estado(self, estado_buscado):
+        """Calcula el total real de árboles de esta especie en un estado específico (SANO, DETERIORADO, etc.)."""
+        from mantenimientos.models import ArbolPlantado
+        return ArbolPlantado.objects.filter(
+            inventario__especie=self,
+            estado__iexact=estado_buscado
+        ).count() 
+
 
 class Inventario(models.Model):
     especie = models.ForeignKey(
