@@ -15,7 +15,10 @@ class ArbolPlantado(models.Model):
 
     def __str__(self):
         return f"Árbol #{self.id} ({self.estado})"
-
+    def obtener_ultimo_mantenimiento(self):
+        """Devuelve el registro de mantenimiento más reciente de este árbol."""
+        return self.mantenimientos.order_by('-fecha').first()
+        
 
 class Mantenimiento(models.Model):
     fecha = models.DateTimeField()
