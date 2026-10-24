@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 
 # ==========================================
 # MODELO PRINCIPAL ('usuarios')
@@ -28,20 +28,19 @@ class Usuario(AbstractUser):
 # MANAGERS
 # ==========================================
 
-class AdminManager(models.Manager):
+class ResponsableManager(UserManager):
     def get_queryset(self):
-        return super().get_queryset().filter(rol=Usuario.Rol.ADMIN)
+        return super().get_queryset().filter(rol=Usuario.Rol.RESPONSABLE)
 
 
-class VoluntarioManager(models.Manager):
+class VoluntarioManager(UserManager):
     def get_queryset(self):
         return super().get_queryset().filter(rol=Usuario.Rol.VOLUNTARIO)
 
 
-class ResponsableManager(models.Manager):
+class AdminManager(UserManager):
     def get_queryset(self):
-        return super().get_queryset().filter(rol=Usuario.Rol.RESPONSABLE)
-
+        return super().get_queryset().filter(rol=Usuario.Rol.ADMIN)
 
 # ==========================================
 # MODELOS PROXY
