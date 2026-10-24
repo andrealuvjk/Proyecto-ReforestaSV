@@ -14,7 +14,7 @@ class ArbolPlantado(models.Model):
         db_table = 'arboles_plantados'
 
     def __str__(self):
-        return f"Árbol #{self.id} ({self.estado})"
+        return f"id: {self.id} {self.inventario.especie} ({self.estado})" # para que me muestre la especie a la cual se le dio mantenimiento inventario.especie
     def obtener_ultimo_mantenimiento(self):
         """Devuelve el registro de mantenimiento más reciente de este árbol."""
         return self.mantenimientos.order_by('-fecha').first()
