@@ -18,7 +18,20 @@ class ArbolPlantado(models.Model):
     def obtener_ultimo_mantenimiento(self):
         """Devuelve el registro de mantenimiento más reciente de este árbol."""
         return self.mantenimientos.order_by('-fecha').first()
-        
+
+    def cambiar_estado(self, nuevo_estado):
+        """Modifica y guarda el estado actual de este árbol (ej: 'SANO', 'DETERIORADO', 'PERDIDO')."""
+        if nuevo_estado:
+            self.estado = nuevo_estado
+            self.save()
+
+    def actualizar_datos(self, nuevo_estado=None, nueva_fecha=None):
+        """Actualiza los datos generales de este árbol sembrado."""
+        if nuevo_estado:
+            self.estado = nuevo_estado
+        if nueva_fecha:
+            self.fecha = nueva_fecha
+        self.save()
 
 class Mantenimiento(models.Model):
     fecha = models.DateTimeField()
@@ -35,3 +48,11 @@ class Mantenimiento(models.Model):
 
     def __str__(self):
         return f"Mantenimiento #{self.id} - {self.fecha}"
+
+    def actualizar_datos(self, nueva_fecha=None, nueva_descripcion=None):
+        """Permite editar la fecha o la descripción del registro de mantenimiento."""
+        if nueva_fecha:
+            self.fecha = nueva_fecha
+        if nueva_descripcion:
+            self.descripcion = nueva_descripcion
+        self.save()
