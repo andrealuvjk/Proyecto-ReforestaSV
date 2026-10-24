@@ -32,6 +32,7 @@ class Campania(models.Model):
         on_delete=models.CASCADE,
         db_column='responsable_id',
         related_name='campanias'
+        
     )
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()

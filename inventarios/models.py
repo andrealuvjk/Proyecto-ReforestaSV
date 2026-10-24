@@ -46,7 +46,7 @@ class Inventario(models.Model):
         db_column='ubicacion_id',
         related_name='inventarios'
     )
-    usuario = models.ForeignKey(
+    usuario = models.ForeignKey(  
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         db_column='usuario_id', #se renombro el campo para mayor claridad, pq puede ser voluntario o responsable
