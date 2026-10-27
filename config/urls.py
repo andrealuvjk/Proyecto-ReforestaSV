@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path
+from campanias.views import prueba_herencia
 #from reforestasv.views import inicio
 
 # urlpatterns = [
@@ -9,4 +10,5 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('campanias/',prueba_herencia, name='campanias')
 ]
