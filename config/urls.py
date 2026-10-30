@@ -14,9 +14,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('campanias/',prueba_herencia, name='campanias'),
-
     #Url para la vista de inventarios
-   path('inventarios/', include('inventarios.urls'))
+   path('inventarios/', include('inventarios.urls')),
+    path('mantenimientos/', include('mantenimientos.urls')),
 ]
 
 #se agrego para servir archivos multimedia durante el desarrollo
