@@ -4,7 +4,7 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Listado de Inventarios</h2>
-        <a href="{% url 'inventario_create' %}" class="btn btn-success">
+        <a href="{% url 'inventarios:inventario_create' %}" class="btn btn-success">
             <i class="bi bi-plus-circle"></i> Nuevo Inventario
         </a>
     </div>
@@ -34,11 +34,11 @@
                             <td class="text-center">
                                 <!-- Botones de acción sin funcionalidad por el momento -->
                                 
-                                   <a href="{% url 'inventario_update' item.id %}" class="btn btn-sm btn-outline-warning" title="Editar">
+                                   <a href="{% url 'inventarios:inventario_update' item.id %}" class="btn btn-sm btn-outline-warning" title="Editar">
                                     <i class="bi bi-pencil"></i> Editar
                                 </a>
                              
-                                <a href="{% url 'inventario_delete' item.id %}" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                <a href="{% url 'inventarios:inventario_delete' item.id %}" class="btn btn-sm btn-outline-danger" title="Eliminar">
                                  <i class="bi bi-trash"></i> Eliminar
                                 </a>
                             </td>

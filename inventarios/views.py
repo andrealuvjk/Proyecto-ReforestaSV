@@ -14,7 +14,7 @@ def inventario_create(view_request):
         form = InventarioForm(view_request.POST, view_request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('inventario_list')
+            return redirect('inventarios:inventario_list')
     else:
         form = InventarioForm()
     
@@ -27,7 +27,7 @@ def inventario_update(request, pk):
         form = InventarioForm(request.POST, request.FILES, instance=inventario)
         if form.is_valid():
             form.save()
-            return redirect('inventario_list')
+            return redirect('inventarios:inventario_list')
     else:
         form = InventarioForm(instance=inventario)
     
@@ -37,6 +37,6 @@ def inventario_delete(request, pk):
     inventario = get_object_or_404(Inventario, pk=pk)
     if request.method == 'POST':
         inventario.delete() # Método nativo de Django para borrar de la base de datos
-        return redirect('inventario_list')
+        return redirect('inventarios:inventario_list')
     
     return render(request, 'inventarios/inventario_confirm_delete.html', {'inventario': inventario})
