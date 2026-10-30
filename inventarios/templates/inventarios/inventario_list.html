@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Listado de Inventarios</h2>
+        <a href="{% url 'inventario_create' %}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Nuevo Inventario
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Especie</th>
+                            <th>Cantidad</th>
+                            <th>Campaña</th>
+                            <th>Ubicación</th>
+                            <th>Usuario Asignado</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in inventarios %}
+                        <tr>
+                            <td>{{ item.especie.nombre }}</td>
+                            <td><span class="badge bg-primary">{{ item.cantidad }}</span></td>
+                            <td>{{ item.campania.titulo }}</td>
+                            <td>{{ item.ubicacion.zona }} - {{ item.ubicacion.ubicacion }}</td>
+                            <td>{{ item.usuario.nombre }}</td>
+                            <td class="text-center">
+                                <!-- Botones de acción sin funcionalidad por el momento -->
+                                
+                                   <a href="{% url 'inventario_update' item.id %}" class="btn btn-sm btn-outline-warning" title="Editar">
+                                    <i class="bi bi-pencil"></i> Editar
+                                </a>
+                             
+                                <a href="{% url 'inventario_delete' item.id %}" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                 <i class="bi bi-trash"></i> Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">
+                                No hay registros de inventario disponibles.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
