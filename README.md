@@ -1,5 +1,3 @@
-# Proyecto: ReforestaSV
-
 ## Descripción del proyecto: 
 Consiste en desarrollar una aplicación web que permita llevar un registro de los arboles 
 plantados durante campañas de reforestación en la comunidad, facilitando así la organización y el seguimiento de la campaña.
@@ -91,3 +89,24 @@ Responsabilidad: Administrar las zonas y ubicaciones físicas donde se encuentra
 * Métodos: registrarUbicacion(), actualizarUbicacion().
 * Relaciones:
     * Puede estar asociada con varios registros de Inventario
+
+
+## Requisitos:
+-Python instalado
+-Git instalado
+
+## Instrucciones básicas para instalar y ejecutar la aplicación:
+
+1.Clonar el repositorio
+
+2.Entrar a la carpeta del proyecto
+
+3.Crear un entorno virtual:
+python -m venv .venv
+
+4.Activar el entorno virtual
+.venv\Scripts\activate
+
+5.Instalar las dependencias
+pip install -r requeriments.txt
+

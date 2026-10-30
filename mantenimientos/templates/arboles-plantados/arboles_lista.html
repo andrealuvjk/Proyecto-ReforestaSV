@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h2>Árboles Plantados</h2>
+
+    <a href="{% url 'mantenimientos:arbol_crear' %}"
+       class="btn btn-success mb-3">
+        Registrar Nuevo Árbol
+    </a>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Inventario</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for arbol in arboles %}
+            <tr>
+                <td>{{ arbol.id }}</td>
+                <td>{{ arbol.fecha|default:"-" }}</td>
+                <td>{{ arbol.estado|default:"-" }}</td>
+                <td>{{ arbol.inventario }}</td>
+                <td><a href="{% url 'mantenimientos:arbol_editar' arbol.id %}"
+   class="btn btn-warning">
+    Editar
+</a>
+                    <form method="POST"
+                          action="{% url 'mantenimientos:arbol_eliminar' arbol.id %}"
+                          onsubmit="return confirm('¿Seguro que deseas eliminar este árbol?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No hay árboles registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
