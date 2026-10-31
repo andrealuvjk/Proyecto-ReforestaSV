@@ -2,11 +2,24 @@ from django.shortcuts import render, redirect
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Inventario
 from .forms import InventarioForm
+from campanias.models import Campania
 
 def inventario_list(view_request):
     """Vista para listar los inventarios existentes con sus relaciones."""
     inventarios = Inventario.objects.all()
-    return render(view_request, 'inventarios/inventario_list.html', {'inventarios': inventarios})
+    campanias = Campania.objects.all()  # Obtenemos todas las campañas para llenar el select
+    campania_id = view_request.GET.get('campania')
+    
+    if campania_id:
+        # Filtramos los inventarios que coincidan con la campaña seleccionada
+        inventarios = inventarios.filter(campania_id=campania_id)
+        
+    context = {
+        'inventarios': inventarios,
+        'campanias': campanias,
+        'campania_seleccionada': campania_id,  # Para mantener la opción seleccionada en el select
+    }
+    return render(view_request, 'inventarios/inventario_list.html', context)
 
 def inventario_create(view_request):
     if view_request.method == 'POST':

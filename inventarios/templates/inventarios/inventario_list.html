@@ -9,6 +9,35 @@
         </a>
     </div>
 
+    <!-- Bloque de Filtro por Campaña (Estilo similar a Mantenimientos) -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label for="campania" class="form-label fw-bold">Filtrar por campaña</label>
+                    <select name="campania" id="campania" class="form-select">
+                        <option value="">-- Todas las campañas --</option>
+                        {% for c in campanias %}
+                            <!-- Mantiene la opción seleccionada si se aplicó el filtro -->
+                            <option value="{{ c.id }}" {% if campania_seleccionada|slugify == c.id|slugify %}selected{% endif %}>
+                                {{ c.titulo }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-auto">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-search"></i> Filtrar
+                    </button>
+                    <!-- Botón limpiar para restablecer la tabla completa -->
+                    <a href="{% url 'inventarios:inventario_list' %}" class="btn btn-outline-secondary">
+                        Limpiar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="table-responsive">
@@ -17,6 +46,8 @@
                         <tr>
                             <th>Especie</th>
                             <th>Cantidad</th>
+                            <th>Sanos</th>       <!-- NUEVA COLUMNA -->
+                             <th>Deteriorados</th> <!-- NUEVA COLUMNA -->
                             <th>Campaña</th>
                             <th>Ubicación</th>
                             <th>Usuario Asignado</th>
@@ -28,6 +59,8 @@
                         <tr>
                             <td>{{ item.especie.nombre }}</td>
                             <td><span class="badge bg-primary">{{ item.cantidad }}</span></td>
+                            <td><span class="text-success fw-bold">{{ item.arboles_sanos }}</span></td>
+                           <td><span class="text-danger fw-bold">{{ item.arboles_deteriorados }}</span></td>
                             <td>{{ item.campania.titulo }}</td>
                             <td>{{ item.ubicacion.zona }} - {{ item.ubicacion.ubicacion }}</td>
                             <td>{{ item.usuario.nombre }}</td>

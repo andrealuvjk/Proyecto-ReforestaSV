@@ -34,6 +34,13 @@
                         </a>
                     </li>
 
+                     <!-- Enlace a Inventarios (Cambia 'inventario_list' por el name real de tu urls.py) -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white px-2" href="{#}">
+                            <i class="bi bi-feather"></i></i> Especies
+                        </a>
+                    </li>
+
                     <!-- Enlace a Mantenimiento (Estático por ahora, cambia el '#' cuando esté listo) -->
                     <li class="nav-item">
                         <a class="nav-link text-white px-2" href="{% url 'mantenimientos:lista' %}">
@@ -45,6 +52,12 @@
                     <li class="nav-item">
                         <a class="nav-link text-white px-2" href="#">
                             <i class="bi bi-flag-fill me-1"></i> Campañas
+                        </a>
+                    </li>
+
+                     <li class="nav-item">
+                        <a class="nav-link text-white px-2" href="{% url 'mantenimientos:arboles_lista' %}">
+                            <i class="bi bi-tree"></i> Arboles Plantados
                         </a>
                     </li>
 
