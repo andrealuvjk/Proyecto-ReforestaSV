@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card col-md-6 mx-auto border-danger shadow-sm">
+        <div class="card-header bg-danger text-white">
+            <h4 class="mb-0">Confirmar Eliminación</h4>
+        </div>
+        <div class="card-body text-center">
+            <p>¿Estás seguro de que deseas eliminar la especie <strong>"{{ especie.nombre }}"</strong>?</p>
+            <p class="text-muted small">Esta acción no se podrá deshacer.</p>
+
+            <form method="post">
+                {% csrf_token %}
+                <a href="{% url 'inventarios:especie_list' %}" class="btn btn-secondary me-2">Cancelar</a>
+                <button type="submit" class="btn btn-danger">Sí, Eliminar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

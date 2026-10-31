@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card col-md-6 mx-auto shadow-sm">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">{{ titulo }}</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">{{ form.nombre.label }}</label>
+                    {{ form.nombre }}
+                    {% if form.nombre.errors %}
+                    <div class="text-danger small mt-1">
+                        {{ form.nombre.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'inventarios:especie_list' %}" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-success">Guardar Especie</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
