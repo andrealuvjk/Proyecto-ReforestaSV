@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar mantenimiento - ReforestaSV{% endblock %}
+
+{% block content %}
+<h2 class="text-danger mb-4">Eliminar mantenimiento</h2>
+
+<p>¿Seguro que quieres eliminar el mantenimiento #{{ mantenimiento.id }} ({{ mantenimiento.descripcion }}) del {{ mantenimiento.fecha|date:"d/m/Y H:i" }}?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a href="{% url 'mantenimientos:lista' %}" class="btn btn-outline-secondary">Cancelar</a>
+</form>
+{% endblock %}
