@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if usuario %}Editar{% else %}Nuevo{% endif %} Usuario - ReforestaSV{% endblock %}
+
+{% block content %}
+<h2 class="text-success mb-4">{% if usuario %}Editar{% else %}Nuevo{% endif %} usuario</h2>
+
+<form method="post" class="col-md-6">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label for="{{ form.rol.id_for_label }}" class="form-label">Tipo Usuario</label>
+        {{ form.rol }}
+        {% if form.rol.errors %}
+            <div class="text-danger small">{{ form.rol.errors }}</div>
+        {% endif %}
+    </div>
+     <div class="mb-3">
+        <label for="{{ form.nombre.id_for_label }}" class="form-label">Nombre</label>
+        {{ form.nombre }}
+        {% if form.nombre.errors %}
+            <div class="text-danger small">{{ form.nombre.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        <label for="{{ form.username.id_for_label }}" class="form-label">Nombre de usuario</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+            <div class="text-danger small">{{ form.username.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        <label for="{{ form.telefono.id_for_label }}" class="form-label">Teléfono</label>
+        {{ form.telefono }}
+        {% if form.telefono.errors %}
+            <div class="text-danger small">{{ form.telefono.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        <label for="{{ form.institucion.id_for_label }}" class="form-label">Institución</label>
+        {{ form.institucion }}
+        {% if form.institucion.errors %}
+            <div class="text-danger small">{{ form.institucion.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        <label for="{{ form.localidad.id_for_label }}" class="form-label">Localidad</label>
+        {{ form.localidad }}
+        {% if form.localidad.errors %}
+            <div class="text-danger small">{{ form.localidad.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+            <div class="text-danger small">{{ form.email.errors }}</div>
+        {% endif %}
+    </div>
+
+    {% if not usuario %}
+    <div class="mb-3">
+        <label for="{{ form.password1.id_for_label }}" class="form-label">Contraseña del usuario</label>
+        {{ form.password1 }}
+        {% if form.password1.errors %}
+            <div class="text-danger small">{{ form.password1.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        <label for="{{ form.password2.id_for_label }}" class="form-label">Confirmar contraseña</label>
+        {{ form.password2 }}
+        {% if form.password2.errors %}
+            <div class="text-danger small">{{ form.password2.errors }}</div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a href="{% url 'usuarios:usuarios' %}" class="btn btn-outline-secondary">Cancelar</a>
+    </div>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const selectRol = document.getElementById('{{ form.rol.id_for_label }}');
+    const inputInstitucion = document.getElementById('{{ form.institucion.id_for_label }}');
+    const inputLocalidad = document.getElementById('{{ form.localidad.id_for_label }}');
+
+    function alternarEstadoCampos() {
+        if (!selectRol || !inputInstitucion || !inputLocalidad) return;
+
+        // Si el valor seleccionado es VOLUNTARIO deshabilita ambos campos
+        const esVoluntario = selectRol.value === 'VOLUNTARIO';
+        const esResponsable = selectRol.value === 'RESPONSABLE';
+
+        inputInstitucion.disabled = esVoluntario;
+        inputLocalidad.disabled = esResponsable
+
+      if (inputInstitucion.disabled) inputInstitucion.value = '';
+        if (inputLocalidad.disabled) inputLocalidad.value = '';
+    }
+
+    if (selectRol) {
+        selectRol.addEventListener('change', alternarEstadoCampos);
+        alternarEstadoCampos(); // Ejecución inicial al cargar
+    }
+});
+</script>
+{% endblock %}

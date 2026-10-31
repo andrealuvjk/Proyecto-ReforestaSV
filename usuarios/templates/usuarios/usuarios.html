@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Usuarios - ReforestaSV{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-success">Usuarios</h2>
+    <a href="{% url 'usuarios:crear_usuario' %}" class="btn btn-success">+ Nuevo Usuario</a>
+</div>
+
+<form method="get" class="row g-2 align-items-end mb-4">
+    <div class="col-auto">
+        <label for="tipo_user" class="form-label">Filtrar Tipo Usuario</label>
+        <select id="tipo_user" name="tipo" class="form-select">
+            <option value="">-- Todos los roles --</option>
+            <option value="VOLUNTARIO" {% if request.GET.tipo == 'VOLUNTARIO' %}selected{% endif %}>Voluntario</option>
+            <option value="RESPONSABLE" {% if request.GET.tipo == 'RESPONSABLE' %}selected{% endif %}>Responsable</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-success">Filtrar</button>
+        <a href="{% url 'usuarios:usuarios' %}" class="btn btn-outline-secondary">Limpiar</a>
+    </div>
+</form>
+
+{% if usuarios %}
+<table class="table table-striped table-hover">
+    <thead class="table-success">
+        <tr>
+            <th>#</th>
+            <th>Username</th>
+            <th>Localidad</th>
+            <th>Institucion</th>
+            <th>Telefono</th>
+            <th>Email</th>
+            <th>ROL</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for u in usuarios %}
+        
+        <tr>
+            <td>{{ u.id }}</td>
+            <td>{{ u.username }}</td>
+            <td>{{ u.localidad|default:"N/A" }}</td>
+            <td>{{ u.institucion|default:"N/A" }}</td>
+            <td>{{ u.telefono }}</td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.get_rol_display|default:u.rol }}</td>
+            <td>
+                <!-- Ajustado a la variable u.id de usuarios -->
+              <a href="{% url 'usuarios:editar' u.id %}" class="btn btn-sm btn-outline-success">Editar</a>
+                <a href="{% url 'usuarios:eliminar' u.id %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-warning text-center">
+    No hay usuarios registrados{% if request.GET.tipo %} con el rol seleccionado{% endif %}.
+</div>
+{% endif %}
+{% endblock %}
