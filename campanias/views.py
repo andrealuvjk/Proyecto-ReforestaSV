@@ -43,6 +43,27 @@ def crear_campania(request):
         'form': form
     })
 
+
+# Vista para editar una campaña existente
+def editar_campania(request, pk):
+    campania = get_object_or_404(Campania, pk=pk)
+    if request.method == 'POST':
+        # Pasamos 'instance=campania' para que el formulario se llene con los datos actuales y los sobrescriba
+        form = CampaniaForm(request.POST, instance=campania)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Campaña actualizada exitosamente.')
+            return redirect('campanias:listado_campanias')
+        else:
+            messages.error(request, 'Ocurrió un error al actualizar la campaña.')
+    else:
+        form = CampaniaForm(instance=campania)
+
+    return render(request, 'campanias/campania_form.html', {
+        'form': form,
+        'campania': campania # Lo usamos para saber si estamos editando
+    })
+
 # Vista para borrar protegiendo la integridad referencial
 def eliminar_campania(request, pk):
     campania = get_object_or_404(Campania, pk=pk)

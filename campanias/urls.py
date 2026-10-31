@@ -7,5 +7,6 @@ urlpatterns = [
     # Mantiene tu vista actual prueba_herencia para cargar el listado
     path('listado/', views.prueba_herencia, name='listado_campanias'),
     path('crear/', views.crear_campania, name='crear_campania'),
+    path('editar/<int:pk>/', views.editar_campania, name='editar_campania'), 
     path('eliminar/<int:pk>/', views.eliminar_campania, name='eliminar_campania'),
 ]

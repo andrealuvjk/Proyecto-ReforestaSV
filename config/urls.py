@@ -13,7 +13,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('campanias/',prueba_herencia, name='campanias'),
+    #path('campanias/',prueba_herencia, name='campanias'),
+     path('campanias/', include('campanias.urls'), name='campanias'),
     #Url para la vista de inventarios
    path('inventarios/', include('inventarios.urls')),
     path('mantenimientos/', include('mantenimientos.urls')),
