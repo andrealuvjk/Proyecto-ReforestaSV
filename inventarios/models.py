@@ -39,7 +39,7 @@ class Inventario(models.Model):
         db_column='campania_id',
         related_name='inventarios'
     )
-    img_url = models.CharField(max_length=250, blank=True, null=True)
+    imagen = models.ImageField(upload_to='inventarios_imgs/', blank=True, null=True)
     ubicacion = models.ForeignKey(
         'campanias.Ubicacion',
         on_delete=models.CASCADE,
