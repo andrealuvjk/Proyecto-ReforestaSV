@@ -12,4 +12,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('campanias/',prueba_herencia, name='campanias'),
     path('mantenimientos/', include('mantenimientos.urls')),
+     path('inventarios/', include('inventarios.urls')),
 ]
