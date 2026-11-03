@@ -18,6 +18,9 @@ urlpatterns = [
     #Url para la vista de inventarios
    path('inventarios/', include('inventarios.urls')),
     path('mantenimientos/', include('mantenimientos.urls')),
+    #URL Usuarios
+    path('usuarios/', include('usuarios.urls')),
+   ##  path('inventarios/', include('inventarios.urls')),
 ]
 
 #se agrego para servir archivos multimedia durante el desarrollo
