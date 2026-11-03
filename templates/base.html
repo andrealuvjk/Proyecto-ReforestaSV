@@ -36,7 +36,7 @@
 
                      <!-- Enlace a Inventarios (Cambia 'inventario_list' por el name real de tu urls.py) -->
                     <li class="nav-item">
-                        <a class="nav-link text-white px-2" href="{#}">
+                        <a class="nav-link text-white px-2" href="{% url 'inventarios:especie_list' %}">
                             <i class="bi bi-feather"></i></i> Especies
                         </a>
                     </li>
@@ -50,7 +50,7 @@
 
                     <!-- Enlace a Campañas (Estático por ahora, cambia el '#' cuando esté listo) -->
                     <li class="nav-item">
-                        <a class="nav-link text-white px-2" href="#">
+                        <a class="nav-link text-white px-2" href="{% url 'campanias:listado_campanias' %}">
                             <i class="bi bi-flag-fill me-1"></i> Campañas
                         </a>
                     </li>
