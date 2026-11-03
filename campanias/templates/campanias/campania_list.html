@@ -12,7 +12,7 @@
     {% endfor %}
 {% endif %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="text-success m-0">🌲 Campañas de Reforestación</h2>
+    <h2 class="text-success m-0">Campañas de Reforestación</h2>
     <a href="{%url 'campanias:crear_campania' %}" class="btn btn-success">+ Nueva Campaña</a>
 </div>
 
@@ -37,7 +37,7 @@
                             <td>
                                 {% if campania.responsable %}
                                     <span class="badge bg-light text-dark border">
-                                        👤 {{ campania.responsable.nombre|default:campania.responsable.username }}
+                                         {{ campania.responsable.nombre|default:campania.responsable.username }}
                                     </span>
                                 {% else %}
                                     <span class="text-muted">Sin asignar</span>
@@ -52,7 +52,7 @@
                             </td>
                             <td>
                                 <a href="#" class="btn btn-sm btn-outline-primary">Ver detalle</a>
-                                <a href="#" class="btn btn-sm btn-outline-warning">Editar</a>
+                               <a href="{% url 'campanias:editar_campania' campania.id %}" class="btn btn-sm btn-outline-warning">Editar</a>
                                 <a href="{% url 'campanias:eliminar_campania' campania.id %}" class="btn btn-sm btn-outline-danger">
                                 Eliminar
                                 </a>
