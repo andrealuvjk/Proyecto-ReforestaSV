@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block content %}
@@ -13,7 +12,19 @@
             Registrar Nuevo Árbol
         </a>
     </div>
+    <form method="GET" class="mb-3 d-flex align-items-center gap-2">
+        <label for="estado" class="form-label mb-0">Filtrar por estado:</label>
 
+        <select name="estado" id="estado" class="form-select" style="max-width: 220px;">
+            <option value="">Todos</option>
+            <option value="SANO" {% if estado_seleccionado == 'SANO' %}selected{% endif %}>SANO</option>
+            <option value="DETERIORADO" {% if estado_seleccionado == 'DETERIORADO' %}selected{% endif %}>DETERIORADO</option>
+            <option value="PERDIDO" {% if estado_seleccionado == 'PERDIDO' %}selected{% endif %}>PERDIDO</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary btn-sm">Filtrar</button>
+        <a href="{% url 'mantenimientos:arboles_lista' %}" class="btn btn-secondary btn-sm">Limpiar</a>
+    </form>
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-hover align-middle">
             <thead class="table-success">
@@ -33,33 +44,71 @@
                     <td>{{ arbol.fecha|date:"d/m/Y"|default:"-" }}</td>
                     <td>{{ arbol.estado|default:"-" }}</td>
                     <td>{{ arbol.inventario }}</td>
+                 <td class="text-center">
+    <a href="{% url 'mantenimientos:arbol_editar' arbol.id %}"
+       class="btn btn-warning btn-sm">
+        Editar
+    </a>
 
-                    <td>
-                        <div class="d-flex justify-content-center flex-wrap gap-2">
-                             
-                            <a href="{% url 'mantenimientos:arbol_editar' arbol.id %}"
-                               class="btn btn-warning btn-sm">
-                                Editar
-                                
-                            </a>
-
-                            <form method="POST"
-                                  action="{% url 'mantenimientos:arbol_eliminar' arbol.id %}"
-                                  onsubmit="return confirm('¿Seguro que deseas eliminar este árbol?');"
-                                  class="mb-0">
-                                {% csrf_token %}
-                                {%if user.rol == 'ADMIN'  %}
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    Eliminar
-                                </button>
-                                {%endif %}
-                            </form>
-
-                        </div>
+    <button type="button"
+            class="btn btn-primary btn-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#modalArbol{{ arbol.id }}">
+        Ver
+    </button>
+</td>
                     </td>
                 </tr>
+                </tr>
+
+                <!-- Modal para ver los datos del árbol -->
+                <div class="modal fade" id="modalArbol{{ arbol.id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    Detalles del Árbol #{{ arbol.id }}
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+
+                            <div class="modal-body">
+
+                                <h6>Información del árbol</h6>
+
+                                <p><strong>ID:</strong> {{ arbol.id }}</p>
+                                <p><strong>Fecha:</strong> {{ arbol.fecha|date:"d/m/Y"|default:"-" }}</p>
+                                <p><strong>Estado:</strong> {{ arbol.estado|default:"-" }}</p>
+                                <p><strong>Inventario:</strong> {{ arbol.inventario }}</p>
+
+                                <hr>
+
+                                <h6>Historial de mantenimientos</h6>
+
+                                {% for mantenimiento in arbol.mantenimientos.all %}
+                                    <div class="border rounded p-3 mb-2">
+                                        <p><strong>Fecha:</strong>{{ mantenimiento.fecha|date:"d/m/Y h:i A" }}</p>
+                                        <p class="mb-0"><strong>Descripción:</strong> {{ mantenimiento.descripcion }}</p>
+                                    </div>
+                                {% empty %}
+                                    <p class="text-muted">Este árbol no tiene mantenimientos registrados.</p>
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Cerrar
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
 
                 {% empty %}
+                
                 <tr>
                     <td colspan="5" class="text-center">
                         No hay árboles registrados.
@@ -69,7 +118,51 @@
             </tbody>
         </table>
     </div>
+    {% for arbol in arboles %}
 
+    <!-- Modal para ver los datos del árbol -->
+    <div class="modal fade" id="modalArbol{{ arbol.id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Detalles del Árbol #{{ arbol.id }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body">
+                    <h6>Información del árbol</h6>
+
+                    <p><strong>ID:</strong> {{ arbol.id }}</p>
+                    <p><strong>Fecha:</strong> {{ arbol.fecha|date:"d/m/Y"|default:"-" }}</p>
+                    <p><strong>Estado:</strong> {{ arbol.estado|default:"-" }}</p>
+                    <p><strong>Inventario:</strong> {{ arbol.inventario }}</p>
+
+                    <hr>
+
+                    <h6>Historial de mantenimientos</h6>
+
+                    {% for mantenimiento in arbol.mantenimientos.all %}
+                        <div class="border rounded p-3 mb-2">
+                            <p><strong>Fecha:</strong> {{ mantenimiento.fecha|date:"d/m/Y H:i" }}</p>
+                            <p class="mb-0"><strong>Descripción:</strong> {{ mantenimiento.descripcion }}</p>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted">Este árbol no tiene mantenimientos registrados.</p>
+                    {% endfor %}
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cerrar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endfor %}
 </div>
 
 {% endblock %}
