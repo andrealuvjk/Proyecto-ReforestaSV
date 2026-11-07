@@ -3,7 +3,10 @@ from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from .forms import UsuarioForm,UsuarioEditarForm
 from .models import Usuario
+from django.contrib.auth.decorators import login_required
+from .decorators import rol_requerido
 
+@login_required
 def crear_usuario(request):
     if request.method == 'POST':
         form = UsuarioForm(request.POST)
@@ -19,7 +22,7 @@ def crear_usuario(request):
         'titulo': 'Nuevo Usuario'
     })
 
-
+@rol_requerido('ADMIN', 'RESPONSABLE')
 def usuarios_list(request):
     tipo_rol = request.GET.get('tipo', '')
     
@@ -32,6 +35,8 @@ def usuarios_list(request):
     })
 
 # Vista de Edición
+@rol_requerido('ADMIN', 'RESPONSABLE')
+@login_required
 def editar_usuario(request, pk):
     usuario = get_object_or_404(Usuario, pk=pk)
     if request.method == 'POST':
@@ -49,6 +54,7 @@ def editar_usuario(request, pk):
     })
 
 # Vista de Eliminación
+@login_required
 def eliminar_usuario(request, pk):
     usuario = get_object_or_404(Usuario, pk=pk)
     if request.method == 'POST':
@@ -56,4 +62,6 @@ def eliminar_usuario(request, pk):
         messages.success(request, 'Usuario eliminado correctamente!')
         return redirect('usuarios:usuarios')
     
+    if request.user.is_authenticated:
+        print(f"Usuario actual: {request.user.nombre}")
     return render(request, 'usuarios/usuario_confirm_delete.html', {'usuario': usuario})
