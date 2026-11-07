@@ -1,8 +1,17 @@
 from django.db import models
 
 class ArbolPlantado(models.Model):
-    fecha = models.DateField(blank=True, null=True)
-    estado = models.CharField(max_length=50, blank=True, null=True)
+    fecha = models.DateField()
+
+    estado = models.CharField(
+        max_length=50,
+        choices=[
+            ('SANO', 'SANO'),
+            ('DETERIORADO', 'DETERIORADO'),
+            ('PERDIDO', 'PERDIDO'),
+        ]
+    )
+
     inventario = models.ForeignKey(
         'inventarios.Inventario',
         on_delete=models.CASCADE,

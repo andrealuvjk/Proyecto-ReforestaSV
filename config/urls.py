@@ -14,6 +14,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('campanias/',include('campanias.urls')),
+
+
     #Url para la vista de inventarios
    path('inventarios/', include('inventarios.urls')),
     path('mantenimientos/', include('mantenimientos.urls')),

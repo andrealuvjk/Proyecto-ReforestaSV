@@ -20,6 +20,7 @@ class MantenimientoForm(forms.ModelForm):
         self.fields['fecha'].input_formats = ['%Y-%m-%dT%H:%M']
 
 class ArbolPlantadoForm(forms.ModelForm):
+
     class Meta:
         model = ArbolPlantado
         fields = ['fecha', 'estado', 'inventario']
@@ -28,10 +29,24 @@ class ArbolPlantadoForm(forms.ModelForm):
                 'type': 'date',
                 'class': 'form-control'
             }),
-            'estado': forms.TextInput(attrs={
-                'class': 'form-control'
+            'estado': forms.Select(attrs={
+                'class': 'form-select'
             }),
             'inventario': forms.Select(attrs={
                 'class': 'form-select'
             }),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['fecha'].error_messages['required'] = (
+            'Por favor, ingresa la fecha del árbol.'
+        )
+        self.fields['estado'].error_messages['required'] = (
+            'Por favor, selecciona el estado del árbol.'
+        )
+        self.fields['inventario'].error_messages['required'] = (
+            'Por favor, selecciona un inventario.'
+        )
+    
