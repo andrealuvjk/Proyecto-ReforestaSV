@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager
 
+
 # ==========================================
 # MODELO PRINCIPAL ('usuarios')
 # ==========================================
@@ -16,6 +17,18 @@ class Usuario(AbstractUser):
     institucion = models.CharField(max_length=200, blank=True, null=True)
     localidad = models.CharField(max_length=200, blank=True, null=True)
     rol = models.CharField(max_length=20, choices=Rol.choices, default=Rol.VOLUNTARIO)
+
+    @property
+    def es_admin(self):
+        return self.rol == self.Rol.ADMIN
+
+    @property
+    def es_responsable(self):
+        return self.rol == self.Rol.RESPONSABLE
+
+    @property
+    def es_voluntario(self):
+        return self.rol == self.Rol.VOLUNTARIO
 
     class Meta:
         db_table = 'usuarios'

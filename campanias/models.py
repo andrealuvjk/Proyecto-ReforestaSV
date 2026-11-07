@@ -59,4 +59,9 @@ class Campania(models.Model):
 
     def duracion_dias(self):
         """Calcula la duración total de la campaña en días."""
-        return (self.fecha_fin - self.fecha_inicio).days
+        diferencia = (self.fecha_fin - self.fecha_inicio).days
+        
+        # Si inicia y termina el mismo día, cuenta como 1 día. De lo contrario, sumamos 1 para incluir el día de inicio.
+        if diferencia == 0:
+            return 1
+        return diferencia + 1 if diferencia > 0 else 1

@@ -49,21 +49,38 @@
                     </li>
 
                     <!-- Enlace a Campañas (Estático por ahora, cambia el '#' cuando esté listo) -->
+                     {%if user.rol == 'ADMIN' or user.rol == 'RESPONSABLE' %}
                     <li class="nav-item">
                         <a class="nav-link text-white px-2" href="{% url 'campanias:listado_campanias' %}">
+
                             <i class="bi bi-flag-fill me-1"></i> Campañas
                         </a>
                     </li>
-
+                    {%endif%}
                      <li class="nav-item">
                         <a class="nav-link text-white px-2" href="{% url 'mantenimientos:arboles_lista' %}">
                             <i class="bi bi-tree"></i> Arboles Plantados
                         </a>
                     </li>
+                    {%if user.rol == 'ADMIN' %}
                     <li class="nav-item">
                         <a class="nav-link text-white px-2" href="{% url 'usuarios:usuarios' %}">
                             <i class="bi bi-person"></i> Usuarios
                         </a>
+                    </li>
+                    {%endif%}
+                    <li>
+                        {% if user.is_authenticated %}
+                    <span class="navbar-text me-3">
+                        Hola, <strong>{{ user.nombre|default:user.username }}</strong>
+                    </span>
+                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-light btn-sm">Cerrar Sesión</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm">Iniciar Sesión</a>
+                {% endif %}
                     </li>
 
                 </ul>
@@ -96,7 +113,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             // Selecciona todas las alertas con la clase .alert
             setTimeout(function() {
-                var alerts = document.querySelectorAll('.alert');
+                var alerts = document.querySelectorAll('.alert:not(.alert-permanent)');
                 alerts.forEach(function(alert) {
                     // Utiliza la API de Bootstrap para cerrar la alerta de forma animada (fade)
                     var bsAlert = new bootstrap.Alert(alert);

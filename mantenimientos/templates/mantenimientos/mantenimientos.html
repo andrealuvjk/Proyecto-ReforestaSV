@@ -8,14 +8,28 @@
     <a href="{% url 'mantenimientos:crear' %}" class="btn btn-success">+ Nuevo mantenimiento</a>
 </div>
 
+<!-- Alerta si se está filtrando por un inventario específico -->
+{% if request.GET.inventario %}
+<div class="alert alert-info alert-permanent d-flex justify-content-between align-items-center shadow-sm">
+    <span><i class="bi bi-info-circle-fill"></i> Mostrando mantenimientos filtrados para el <strong>Inventario #{{ request.GET.inventario }}</strong>.</span>
+    <a href="{% url 'mantenimientos:lista' %}" class="btn btn-sm btn-outline-dark">Ver todos los mantenimientos</a>
+</div>
+{% endif %}
+
 <form method="get" class="row g-2 align-items-end mb-4">
+    <!-- Si ya viene el inventario por GET, lo mantenemos oculto para que no se pierda al filtrar por fecha -->
+    {% if request.GET.inventario %}
+        <input type="hidden" name="inventario" value="{{ request.GET.inventario }}">
+    {% endif %}
+
     <div class="col-auto">
         <label for="fecha" class="form-label">Filtrar por fecha</label>
         <input type="date" id="fecha" name="fecha" class="form-control" value="{{ fecha|default:'' }}">
     </div>
     <div class="col-auto">
         <button type="submit" class="btn btn-success">Filtrar</button>
-        <a href="{% url 'mantenimientos:lista' %}" class="btn btn-outline-secondary">Limpiar</a>
+       <a href="{% url 'mantenimientos:lista' %}{% if request.GET.inventario %}?inventario={{ request.GET.inventario }}{% endif %}" class="btn btn-outline-secondary">Limpiar</a>
+   
     </div>
 </form>
 
@@ -39,7 +53,9 @@
             <td>{{ m.arbol_plantado }}</td>
             <td>
     <a href="{% url 'mantenimientos:editar' m.id %}" class="btn btn-sm btn-outline-success">Editar</a>
+    {%if user.rol == 'ADMIN' %}
     <a href="{% url 'mantenimientos:eliminar' m.id %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+    {%endif %}
 </td>
         </tr>
         {% endfor %}

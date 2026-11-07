@@ -46,6 +46,33 @@ class InventarioForm(forms.ModelForm):
             'usuario': forms.Select(attrs={'class': 'form-select'}),
         }
 
+
+        error_messages = {
+            'especie': {
+                'required': 'Debe seleccionar una especie obligatoriamente.',
+                'invalid_choice': 'Seleccione una especie válida.',
+            },
+            'cantidad': {
+                'required': 'La cantidad de árboles es un campo obligatorio.',
+                'invalid': 'Por favor, ingrese un número entero válido.',
+            },
+            'campania': {
+                'required': 'Debe asociar el inventario a una campaña.',
+            },
+            'ubicacion': {
+                'required': 'La ubicación es obligatoria para este lote.',
+            },
+            'usuario': {
+                'required': 'Debe asignar un usuario responsable o voluntario.',
+            }
+        }
+
+    def clean_cantidad(self):
+        cantidad = self.cleaned_data.get('cantidad')
+        if cantidad is not None and cantidad < 0:
+            raise forms.ValidationError('La cantidad de ejemplares no puede ser un número negativo.')
+        return cantidad
+
         # Sobrescribimos el comportamiento de los select para cambiar el texto por defecto
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

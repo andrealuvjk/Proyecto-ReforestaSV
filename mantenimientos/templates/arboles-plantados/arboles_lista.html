@@ -44,17 +44,19 @@
                     <td>{{ arbol.fecha|date:"d/m/Y"|default:"-" }}</td>
                     <td>{{ arbol.estado|default:"-" }}</td>
                     <td>{{ arbol.inventario }}</td>
-                    <td class="text-center">
-                        <a href="{% url 'mantenimientos:arbol_editar' arbol.id %}"
-                           class="btn btn-warning btn-sm">
-                            Editar
-                        </a>
-                        <button type="button"
-                        class="btn btn-primary btn-sm"
-                        data-bs-toggle="modal"
-                        data-bs-target="#modalArbol{{ arbol.id }}">
-                        Ver
-                        </button>
+                 <td class="text-center">
+    <a href="{% url 'mantenimientos:arbol_editar' arbol.id %}"
+       class="btn btn-warning btn-sm">
+        Editar
+    </a>
+
+    <button type="button"
+            class="btn btn-primary btn-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#modalArbol{{ arbol.id }}">
+        Ver
+    </button>
+</td>
                     </td>
                 </tr>
                 </tr>

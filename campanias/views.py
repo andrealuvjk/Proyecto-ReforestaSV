@@ -1,17 +1,4 @@
-from django.shortcuts import render
-
-# Create your views here.
-from .models import Campania
-
-def prueba_herencia(request):
-    # Consultar todas las campañas optimizando la carga del usuario responsable
-   # campanias = Campania.objects.select_related('responsable').all()
-    campanias = Campania.objects.all()
-    
-    return render(request, 'campanias/campania_list.html', {
-        'campanias': campanias
-    })
-
+from usuarios.decorators import rol_requerido
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.db.models import ProtectedError
@@ -19,13 +6,14 @@ from django.db import IntegrityError
 from .models import Campania
 from .forms import CampaniaForm
 
-# Tu vista para mostrar la lista
-def prueba_herencia(request):
+@rol_requerido('ADMIN', 'RESPONSABLE')
+def ver_campanias(request):
     campanias = Campania.objects.all()
     return render(request, 'campanias/campania_list.html', {
         'campanias': campanias
     })
 
+@rol_requerido('ADMIN', 'RESPONSABLE')
 # Vista para guardar el formulario de nueva campaña
 def crear_campania(request):
     if request.method == 'POST':
@@ -65,6 +53,7 @@ def editar_campania(request, pk):
     })
 
 # Vista para borrar protegiendo la integridad referencial
+@rol_requerido('ADMIN', 'RESPONSABLE')
 def eliminar_campania(request, pk):
     campania = get_object_or_404(Campania, pk=pk)
     if request.method == 'POST':
