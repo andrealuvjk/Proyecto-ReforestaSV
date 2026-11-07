@@ -50,7 +50,7 @@
 
                     <!-- Enlace a Campañas (Estático por ahora, cambia el '#' cuando esté listo) -->
                     <li class="nav-item">
-                        <a class="nav-link text-white px-2" href="#">
+                        <a class="nav-link text-white px-2" href="{%url 'campanias:listado_campanias'%}">
                             <i class="bi bi-flag-fill me-1"></i> Campañas
                         </a>
                     </li>
@@ -64,6 +64,19 @@
                         <a class="nav-link text-white px-2" href="{% url 'usuarios:usuarios' %}">
                             <i class="bi bi-person"></i> Usuarios
                         </a>
+                    </li>
+                    <li>
+                        {% if user.is_authenticated %}
+                    <span class="navbar-text me-3">
+                        Hola, <strong>{{ user.nombre|default:user.username }}</strong>
+                    </span>
+                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-light btn-sm">Cerrar Sesión</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm">Iniciar Sesión</a>
+                {% endif %}
                     </li>
 
                 </ul>

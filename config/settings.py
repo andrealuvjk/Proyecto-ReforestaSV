@@ -45,6 +45,12 @@ INSTALLED_APPS = [
     'usuarios'
 ]
 AUTH_USER_MODEL = 'usuarios.Usuario'
+LOGIN_URL = 'login'
+# URL a la que se redirige automáticamente al iniciar sesión correctamente
+LOGIN_REDIRECT_URL = 'usuarios:usuarios'
+
+# URL a la que se redirige al cerrar sesión
+LOGOUT_REDIRECT_URL = 'login'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import include, path
-from campanias.views import prueba_herencia
+from campanias.views import ver_campanias
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -13,13 +13,16 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('campanias/',prueba_herencia, name='campanias'),
+    path('campanias/',include('campanias.urls')),
     #Url para la vista de inventarios
    path('inventarios/', include('inventarios.urls')),
     path('mantenimientos/', include('mantenimientos.urls')),
     #URL Usuarios
     path('usuarios/', include('usuarios.urls')),
    ##  path('inventarios/', include('inventarios.urls')),
+
+   # Rutas por defecto para login, logout, cambio de contraseña, etc.
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 #se agrego para servir archivos multimedia durante el desarrollo
