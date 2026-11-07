@@ -36,10 +36,11 @@
 
                     <td>
                         <div class="d-flex justify-content-center flex-wrap gap-2">
-
+                             
                             <a href="{% url 'mantenimientos:arbol_editar' arbol.id %}"
                                class="btn btn-warning btn-sm">
                                 Editar
+                                
                             </a>
 
                             <form method="POST"
@@ -47,10 +48,11 @@
                                   onsubmit="return confirm('¿Seguro que deseas eliminar este árbol?');"
                                   class="mb-0">
                                 {% csrf_token %}
-
+                                {%if user.rol == 'ADMIN'  %}
                                 <button type="submit" class="btn btn-danger btn-sm">
                                     Eliminar
                                 </button>
+                                {%endif %}
                             </form>
 
                         </div>

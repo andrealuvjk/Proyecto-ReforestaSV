@@ -5,6 +5,8 @@
 {% block content %}
 <h2 class="text-success mb-4">{% if usuario %}Editar{% else %}Nuevo{% endif %} usuario</h2>
 
+<div class="card mx-auto col-md-8 " >
+   <div class="card-body">
 <form method="post" class="col-md-6">
     {% csrf_token %}
 
@@ -86,6 +88,8 @@
         <a href="{% url 'usuarios:usuarios' %}" class="btn btn-outline-secondary">Cancelar</a>
     </div>
 </form>
+</div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

@@ -49,23 +49,26 @@
                     </li>
 
                     <!-- Enlace a Campañas (Estático por ahora, cambia el '#' cuando esté listo) -->
+                     {%if user.rol == 'ADMIN' or user.rol == 'RESPONSABLE' %}
                     <li class="nav-item">
                         <a class="nav-link text-white px-2" href="{% url 'campanias:listado_campanias' %}">
 
                             <i class="bi bi-flag-fill me-1"></i> Campañas
                         </a>
                     </li>
-
+                    {%endif%}
                      <li class="nav-item">
                         <a class="nav-link text-white px-2" href="{% url 'mantenimientos:arboles_lista' %}">
                             <i class="bi bi-tree"></i> Arboles Plantados
                         </a>
                     </li>
+                    {%if user.rol == 'ADMIN' %}
                     <li class="nav-item">
                         <a class="nav-link text-white px-2" href="{% url 'usuarios:usuarios' %}">
                             <i class="bi bi-person"></i> Usuarios
                         </a>
                     </li>
+                    {%endif%}
                     <li>
                         {% if user.is_authenticated %}
                     <span class="navbar-text me-3">
