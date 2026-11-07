@@ -1,3 +1,4 @@
+import re
 from django import forms
 from .models import Especie
 
@@ -10,15 +11,24 @@ class EspecieForm(forms.ModelForm):
         }
         widgets = {
             'nombre': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': 'Ej. Ceiba, Maquilíshuat...'
+                'class': 'form-control',
+                'placeholder': 'Ej. Ceiba, Maquilíshuat...',
+                'maxlength': '100',
             }),
         }
 
     def clean_nombre(self):
-        nombre = self.cleaned_data.get('nombre')
+        nombre = self.cleaned_data.get('nombre', '').strip()
+        
+        if not nombre:
+            raise forms.ValidationError("El nombre de la especie es obligatorio.")
+        
+        if not re.match(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$', nombre):
+            raise forms.ValidationError("El nombre solo debe contener letras y espacios, sin números ni caracteres especiales.")
+        
         if Especie.objects.filter(nombre__iexact=nombre).exclude(pk=self.instance.pk).exists():
             raise forms.ValidationError("Esta especie ya se encuentra registrada en el sistema.")
+            
         return nombre
 from .models import Inventario
 

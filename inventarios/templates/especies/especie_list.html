@@ -34,10 +34,10 @@
                 <td class="text-center">
                     <a href="{% url 'inventarios:especie_editar' especie.id %}"
                         class="btn btn-warning btn-sm">Editar</a>
-                     {%if user.rol == 'ADMIN'  %}
+
                     <a href="{% url 'inventarios:especie_eliminar' especie.id %}"
                         class="btn btn-danger btn-sm">Eliminar</a>
-                        {%endif%}
+
                 </td>
             </tr>
             {% empty %}
