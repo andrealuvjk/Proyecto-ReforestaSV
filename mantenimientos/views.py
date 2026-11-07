@@ -64,14 +64,23 @@ def arbol_editar(request, id):
 def arboles_lista(request):
     arboles = ArbolPlantado.objects.select_related(
         'inventario'
+    ).prefetch_related(
+        'mantenimientos'
     ).all().order_by('-fecha')
+
+    estado = request.GET.get('estado')
+
+    if estado:
+        arboles = arboles.filter(estado=estado)
 
     return render(
         request,
         'arboles-plantados/arboles_lista.html',
-        {'arboles': arboles}
+        {
+            'arboles': arboles,
+            'estado_seleccionado': estado
+        }
     )
-
 def arbol_eliminar(request, id):
     if request.method == 'POST':
         arbol = get_object_or_404(ArbolPlantado, id=id)
