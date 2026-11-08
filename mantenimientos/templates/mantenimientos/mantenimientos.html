@@ -53,7 +53,9 @@
             <td>{{ m.arbol_plantado }}</td>
             <td>
     <a href="{% url 'mantenimientos:editar' m.id %}" class="btn btn-sm btn-outline-success">Editar</a>
+    {%if user.rol == 'ADMIN' %}
     <a href="{% url 'mantenimientos:eliminar' m.id %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+    {%endif %}
 </td>
         </tr>
         {% endfor %}

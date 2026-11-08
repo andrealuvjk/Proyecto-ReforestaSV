@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+
+from usuarios.decorators import rol_requerido
 from .models import Mantenimiento, ArbolPlantado
 from .forms import MantenimientoForm, ArbolPlantadoForm
 
@@ -70,20 +72,33 @@ def arbol_editar(request, id):
 def arboles_lista(request):
     arboles = ArbolPlantado.objects.select_related(
         'inventario'
+    ).prefetch_related(
+        'mantenimientos'
     ).all().order_by('-fecha')
+
+    estado = request.GET.get('estado')
+
+    if estado:
+        arboles = arboles.filter(estado=estado)
 
     return render(
         request,
         'arboles-plantados/arboles_lista.html',
-        {'arboles': arboles}
+        {
+            'arboles': arboles,
+            'estado_seleccionado': estado
+        }
     )
 
+
+@rol_requerido('ADMIN', 'RESPONSABLE')
 def arbol_eliminar(request, id):
     if request.method == 'POST':
         arbol = get_object_or_404(ArbolPlantado, id=id)
         arbol.delete()
 
     return redirect('mantenimientos:arboles_lista')
+
 
 def mantenimiento_editar(request, pk):
     mantenimiento = get_object_or_404(Mantenimiento, pk=pk)
@@ -100,7 +115,7 @@ def mantenimiento_editar(request, pk):
         'mantenimiento': mantenimiento,
     })
 
-
+@rol_requerido('ADMIN', 'RESPONSABLE')
 def mantenimiento_eliminar(request, pk):
     mantenimiento = get_object_or_404(Mantenimiento, pk=pk)
     if request.method == 'POST':

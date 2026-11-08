@@ -1,3 +1,5 @@
+
+from usuarios.decorators import rol_requerido
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.db.models import ProtectedError
@@ -17,14 +19,15 @@ def prueba_herencia(request):
         'campanias': campanias
     })
 
-# Tu vista para mostrar la lista
-def prueba_herencia(request):
+
+@rol_requerido('ADMIN', 'RESPONSABLE')
+def ver_campanias(request):
     campanias = Campania.objects.all()
     return render(request, 'campanias/campania_list.html', {
         'campanias': campanias
     })
 
-# Vista para guardar el formulario de nueva campaña
+@rol_requerido('ADMIN', 'RESPONSABLE')
 def crear_campania(request):
     if request.method == 'POST':
         form = CampaniaForm(request.POST)
@@ -41,12 +44,10 @@ def crear_campania(request):
         'form': form
     })
 
-
-# Vista para editar una campaña existente
+@rol_requerido('ADMIN', 'RESPONSABLE')
 def editar_campania(request, pk):
     campania = get_object_or_404(Campania, pk=pk)
     if request.method == 'POST':
-        # Pasamos 'instance=campania' para que el formulario se llene con los datos actuales y los sobrescriba
         form = CampaniaForm(request.POST, instance=campania)
         if form.is_valid():
             form.save()
@@ -59,12 +60,18 @@ def editar_campania(request, pk):
 
     return render(request, 'campanias/campania_form.html', {
         'form': form,
-        'campania': campania # Lo usamos para saber si estamos editando
+        'campania': campania
     })
 
-# Vista para borrar protegiendo la integridad referencial
+@rol_requerido('ADMIN', 'RESPONSABLE')
 def eliminar_campania(request, pk):
     campania = get_object_or_404(Campania, pk=pk)
+
+    # Restricción: No eliminar si la campaña tiene inventarios vinculados
+    if hasattr(campania, 'inventarios') and campania.inventarios.exists():
+        messages.error(request, 'No se puede eliminar esta campaña porque ya tiene registros de inventario asociados.')
+        return redirect('campanias:listado_campanias')
+
     if request.method == 'POST':
         try:
             campania.delete()
@@ -76,6 +83,7 @@ def eliminar_campania(request, pk):
     return render(request, 'campanias/campania_confirm_delete.html', {
         'campania': campania
     })
+
 
 # --- VISTAS DE UBICACIONES ---
 
@@ -124,3 +132,4 @@ def ubicacion_delete(request, pk):
         return redirect('campanias:ubicacion_list')
         
     return render(request, 'ubicacion/ubicacion_confirm_delete.html', {'ubicacion': ubicacion})
+

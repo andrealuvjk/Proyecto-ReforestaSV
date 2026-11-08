@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Iniciar Sesión - ReforestaSV{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h3 class="card-title text-center text-success mb-4">ReforestaSV</h3>
+                <h5 class="text-center text-secondary mb-4">Iniciar Sesión</h5>
+
+                {% if form.errors %}
+                <div class="alert alert-danger py-2" role="alert">
+                    Usuario o contraseña incorrectos.
+                </div>
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="{{ form.username.id_for_label }}" class="form-label">Usuario</label>
+                        <input type="text" name="username" class="form-control" id="{{ form.username.id_for_label }}" required autofocus>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.password.id_for_label }}" class="form-label">Contraseña</label>
+                        <input type="password" name="password" class="form-control" id="{{ form.password.id_for_label }}" required>
+                    </div>
+
+                    <!-- Preserva la redirección al origen si venía de un @login_required -->
+                    <input type="hidden" name="next" value="{{ next }}">
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-success">Ingresar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
