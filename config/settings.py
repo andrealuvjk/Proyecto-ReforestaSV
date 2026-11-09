@@ -47,7 +47,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = 'usuarios.Usuario'
 LOGIN_URL = 'login'
 # URL a la que se redirige automáticamente al iniciar sesión correctamente
-LOGIN_REDIRECT_URL = 'usuarios:usuarios'
+LOGIN_REDIRECT_URL = 'inventarios:inventario_list'
 
 # URL a la que se redirige al cerrar sesión
 LOGOUT_REDIRECT_URL = 'login'
@@ -100,11 +100,11 @@ DATABASES = {
      }
 }
 # DATABASES = {
-#     'default': {
+#      'default': {
 #          'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': BASE_DIR / 'db.sqlite3',
-#      }
-#  }
+#       }
+#   }
 
 
 # Password validation
