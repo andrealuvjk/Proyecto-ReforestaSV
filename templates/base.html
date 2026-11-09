@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <!-- NUEVO: Bootstrap Icons para los iconos de la barra -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
 </head>
 <body>
     <!-- Menú de navegación común a todo el sitio -->
@@ -29,25 +30,31 @@
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
                     
                     <!-- Enlace a Inventarios (Cambia 'inventario_list' por el name real de tu urls.py) -->
+                     {%if user.rol == 'ADMIN' or user.rol == 'RESPONSABLE' or user.rol == 'VOLUNTARIO' %}
                     <li class="nav-item">
                         <a class="nav-link text-white px-2" href="{% url 'inventarios:inventario_list' %}">
                             <i class="bi bi-boxes me-1"></i> Inventarios
                         </a>
                     </li>
+                    {%endif%}
 
-                     <!-- Enlace a Inventarios (Cambia 'inventario_list' por el name real de tu urls.py) -->
+                    
+                    {%if user.rol == 'ADMIN' or user.rol == 'RESPONSABLE' or user.rol == 'VOLUNTARIO' %}
                     <li class="nav-item">
                         <a class="nav-link text-white px-2" href="{% url 'inventarios:especie_list' %}">
                             <i class="bi bi-feather"></i></i> Especies
                         </a>
                     </li>
+                    {%endif%}
 
                     <!-- Enlace a Mantenimiento (Estático por ahora, cambia el '#' cuando esté listo) -->
+                     {%if user.rol == 'ADMIN' or user.rol == 'RESPONSABLE' or user.rol == 'VOLUNTARIO' %}
                     <li class="nav-item">
                         <a class="nav-link text-white px-2" href="{% url 'mantenimientos:lista' %}">
                             <i class="bi bi-tools me-1"></i> Mantenimiento
                         </a>
                     </li>
+                    {%endif%}
 
                     <!-- Enlace a Campañas (Estático por ahora, cambia el '#' cuando esté listo) -->
                      {%if user.rol == 'ADMIN' or user.rol == 'RESPONSABLE' %}
@@ -58,19 +65,23 @@
                         </a>
                     </li>
                     {%endif%}
+                    {%if user.rol == 'ADMIN' or user.rol == 'RESPONSABLE' or user.rol == 'VOLUNTARIO' %}
+                  
                      <li class="nav-item">
                         <a class="nav-link text-white px-2" href="{% url 'mantenimientos:arboles_lista' %}">
                             <i class="bi bi-tree"></i> Arboles Plantados
                         </a>
                     </li>
+                      {%endif%}
 
-
+                    
+                    {%if user.rol == 'ADMIN' or user.rol == 'RESPONSABLE' %}
                      <li class="nav-item">
                         <a class="nav-link text-white px-2" href="{% url 'campanias:ubicacion_list' %}">
                             <i class="bi bi-geo-alt"></i> Ubicaciones
                         </a>
                     </li>
-
+                    {%endif%}
                     {%if user.rol == 'ADMIN' %}
                     <li class="nav-item">
                         <a class="nav-link text-white px-2" href="{% url 'usuarios:usuarios' %}">
@@ -130,6 +141,8 @@
                 });
             }, 5000); // 5000 milisegundos = 5 segundos 
         });
+
     </script>
+    
 </body>
 </html>

@@ -55,6 +55,7 @@ def editar_usuario(request, pk):
 
 # Vista de Eliminación
 @login_required
+@rol_requerido('ADMIN')
 def eliminar_usuario(request, pk):
     usuario = get_object_or_404(Usuario, pk=pk)
     if request.method == 'POST':

@@ -210,3 +210,6 @@ class Inventario(models.Model):
     def arboles_deteriorados(self):
         """Devuelve la cantidad de árboles deteriorados en este lote."""
         return self.conteo_por_estado('DETERIORADO')
+
+    def arboles_perdidos(self):
+        return self.conteo_por_estado('PERDIDO')

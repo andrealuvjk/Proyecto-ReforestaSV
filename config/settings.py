@@ -47,7 +47,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = 'usuarios.Usuario'
 LOGIN_URL = 'login'
 # URL a la que se redirige automáticamente al iniciar sesión correctamente
-LOGIN_REDIRECT_URL = 'usuarios:usuarios'
+LOGIN_REDIRECT_URL = 'inventarios:inventario_list'
 
 # URL a la que se redirige al cerrar sesión
 LOGOUT_REDIRECT_URL = 'login'
@@ -88,23 +88,23 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
      'default': {
          'ENGINE': 'mssql',
-         'NAME': config('DB_NAME'),
-         'USER': config('DB_USER', default=''),
-         'PASSWORD': config('DB_PASSWORD', default=''),
-         'HOST': config('DB_HOST'),
-         'PORT': config('DB_PORT', default=''),
-         'OPTIONS': {
-             'driver': 'ODBC Driver 17 for SQL Server',
-             'extra_params': 'TrustServerCertificate=yes;Trusted_Connection=yes',
-        },
-    }
+          'NAME': config('DB_NAME'),
+          'USER': config('DB_USER', default=''),
+          'PASSWORD': config('DB_PASSWORD', default=''),
+          'HOST': config('DB_HOST'),
+          'PORT': config('DB_PORT', default=''),
+          'OPTIONS': {
+              'driver': 'ODBC Driver 17 for SQL Server',
+              'extra_params': 'TrustServerCertificate=yes;Trusted_Connection=yes',
+         },
+     }
 }
-#DATABASES = {
-#     'default': {
- #        'ENGINE': 'django.db.backends.sqlite3',
-  #       'NAME': BASE_DIR / 'db.sqlite3',
-   #  }
- #}
+# DATABASES = {
+#      'default': {
+#          'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#       }
+#   }
 
 
 # Password validation

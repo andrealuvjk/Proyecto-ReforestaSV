@@ -99,7 +99,7 @@ def arbol_eliminar(request, id):
 
     return redirect('mantenimientos:arboles_lista')
 
-
+@rol_requerido('ADMIN', 'RESPONSABLE','VOLUNTARIO')
 def mantenimiento_editar(request, pk):
     mantenimiento = get_object_or_404(Mantenimiento, pk=pk)
     if request.method == 'POST':
