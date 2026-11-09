@@ -86,11 +86,12 @@ def eliminar_campania(request, pk):
 
 
 # --- VISTAS DE UBICACIONES ---
-
+@rol_requerido('ADMIN', 'RESPONSABLE','VOLUNTARIO')
 def ubicacion_list(request):
     ubicaciones = Ubicacion.objects.all()
     return render(request, 'ubicacion/ubicacion_list.html', {'ubicaciones': ubicaciones})
 
+@rol_requerido('ADMIN', 'RESPONSABLE')
 def ubicacion_create(request):
     if request.method == 'POST':
         form = UbicacionForm(request.POST)
@@ -101,7 +102,7 @@ def ubicacion_create(request):
     else:
         form = UbicacionForm()
     return render(request, 'ubicacion/ubicacion_form.html', {'form': form})
-
+@rol_requerido('ADMIN', 'RESPONSABLE')
 def ubicacion_update(request, pk):
     ubicacion = get_object_or_404(Ubicacion, pk=pk)
     if request.method == 'POST':
@@ -114,6 +115,7 @@ def ubicacion_update(request, pk):
         form = UbicacionForm(instance=ubicacion)
     return render(request, 'ubicacion/ubicacion_form.html', {'form': form, 'editando': True})
 
+@rol_requerido('ADMIN')
 def ubicacion_delete(request, pk):
     ubicacion = get_object_or_404(Ubicacion, pk=pk)
     

@@ -88,23 +88,23 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
      'default': {
          'ENGINE': 'mssql',
-         'NAME': config('DB_NAME'),
-         'USER': config('DB_USER', default=''),
-         'PASSWORD': config('DB_PASSWORD', default=''),
-         'HOST': config('DB_HOST'),
-         'PORT': config('DB_PORT', default=''),
-         'OPTIONS': {
-             'driver': 'ODBC Driver 17 for SQL Server',
-             'extra_params': 'TrustServerCertificate=yes;Trusted_Connection=yes',
-        },
-    }
+          'NAME': config('DB_NAME'),
+          'USER': config('DB_USER', default=''),
+          'PASSWORD': config('DB_PASSWORD', default=''),
+          'HOST': config('DB_HOST'),
+          'PORT': config('DB_PORT', default=''),
+          'OPTIONS': {
+              'driver': 'ODBC Driver 17 for SQL Server',
+              'extra_params': 'TrustServerCertificate=yes;Trusted_Connection=yes',
+         },
+     }
 }
-#DATABASES = {
+# DATABASES = {
 #     'default': {
- #        'ENGINE': 'django.db.backends.sqlite3',
-  #       'NAME': BASE_DIR / 'db.sqlite3',
-   #  }
- #}
+#          'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#      }
+#  }
 
 
 # Password validation

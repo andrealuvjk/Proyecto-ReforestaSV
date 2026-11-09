@@ -1,5 +1,10 @@
 from django.db import models
 
+
+def format_id(id):
+    """Formatea un ID numérico a un string de 4 dígitos con ceros a la izquierda."""
+    return str(id).zfill(4)
+
 class ArbolPlantado(models.Model):
     fecha = models.DateField()
 
@@ -23,7 +28,7 @@ class ArbolPlantado(models.Model):
         db_table = 'arboles_plantados'
 
     def __str__(self):
-        return f"id: {self.id} {self.inventario.especie} ({self.estado})" # para que me muestre la especie a la cual se le dio mantenimiento inventario.especie
+        return f" {format_id(self.id)} - {self.inventario.especie} ({self.estado})" # para que me muestre la especie a la cual se le dio mantenimiento inventario.especie
     def obtener_ultimo_mantenimiento(self):
         """Devuelve el registro de mantenimiento más reciente de este árbol."""
         return self.mantenimientos.order_by('-fecha').first()

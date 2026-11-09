@@ -61,7 +61,8 @@
                             <th>Especie</th>
                             <th>Cantidad</th>
                             <th>Sanos</th>       <!-- NUEVA COLUMNA -->
-                             <th>Deteriorados</th> <!-- NUEVA COLUMNA -->
+                             <th>Deteriorados</th>
+                             <th>Perdidos</th> <!-- NUEVA COLUMNA -->
                             <th>Campaña</th>
                             <th>Ubicación</th>
                             <th>Usuario Asignado</th>
@@ -75,6 +76,7 @@
                             <td><span class="badge bg-primary">{{ item.cantidad }}</span></td>
                             <td><span class="text-success fw-bold">{{ item.arboles_sanos }}</span></td>
                            <td><span class="text-danger fw-bold">{{ item.arboles_deteriorados }}</span></td>
+                           <td><span class="text-danger fw-bold">{{ item.arboles_perdidos }}</span></td>
                             <td>{{ item.campania.titulo }}</td>
                             <td>{{ item.ubicacion.zona }} - {{ item.ubicacion.ubicacion }}</td>
                             <td>{{ item.usuario.nombre }}</td>
@@ -104,9 +106,11 @@
         </a>
        
         <!-- Botón Eliminar -->
+         {% if user.rol == 'ADMIN' %}
         <a href="{% url 'inventarios:inventario_delete' item.id %}" class="btn btn-sm btn-outline-danger text-sm-nowrap" title="Eliminar">
             <i class="bi bi-trash"></i> <span class="d-inline d-md-none d-lg-inline">Eliminar</span>
         </a>
+        {% endif %}
     </div>
                             </td>
                         </tr>

@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
+
+from usuarios.decorators import rol_requerido
 from .models import Inventario
 from .models import Especie
 from .forms import InventarioForm
@@ -19,6 +21,7 @@ def especie_list(request):
     return render(request, 'especies/especie_list.html', {'especies': especies})
 
 # 2. Crear nueva especie
+@rol_requerido('ADMIN','RESPONSABLE')
 def especie_crear(request):
     if request.method == 'POST':
         form = EspecieForm(request.POST)
@@ -31,6 +34,7 @@ def especie_crear(request):
     return render(request, 'especies/especie_form.html', {'form': form, 'titulo': 'Nueva Especie'})
 
 # 3. Editar especie
+@rol_requerido('ADMIN')
 def especie_editar(request, pk):
     especie = get_object_or_404(Especie, pk=pk)
     if request.method == 'POST':
@@ -44,6 +48,7 @@ def especie_editar(request, pk):
     return render(request, 'especies/especie_form.html', {'form': form, 'titulo': 'Editar Especie'})
 
 # 4. Eliminar especie
+@rol_requerido('ADMIN')
 def especie_eliminar(request, pk):
     especie = get_object_or_404(Especie, pk=pk)
     
@@ -62,6 +67,7 @@ def especie_eliminar(request, pk):
     return render(request, 'especies/especie_confirm_delete.html', {'especie': especie})
 
 #funciones de inventario
+rol_requerido('ADMIN', 'RESPONSABLE','VOLUNTARIO')
 def inventario_list(view_request):
     """Vista para listar los inventarios existentes con sus relaciones."""
     inventarios = Inventario.objects.all()
@@ -87,7 +93,7 @@ def inventario_list(view_request):
         'especie_seleccionada': especie_id,
     }
     return render(view_request, 'inventarios/inventario_list.html', context)
-
+@rol_requerido('ADMIN', 'RESPONSABLE','VOLUNTARIO')
 def inventario_create(view_request):
     if view_request.method == 'POST':
        
@@ -115,7 +121,7 @@ def inventario_create(view_request):
         form = InventarioForm(instance=inventario)
     
     return render(request, 'inventarios/inventario_form.html', {'form': form, 'editando': True})"""
-
+@rol_requerido('ADMIN', 'RESPONSABLE')
 def inventario_update(request, pk):
     inventario = get_object_or_404(Inventario, pk=pk)
     
@@ -139,7 +145,7 @@ def inventario_update(request, pk):
 
     
   
-
+@rol_requerido('ADMIN')
 def inventario_delete(request, pk):
     inventario = get_object_or_404(Inventario, pk=pk)
     if request.method == 'POST':

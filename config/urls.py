@@ -4,6 +4,7 @@ from campanias.views import ver_campanias
 
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import home_redirect
 #from reforestasv.views import inicio
 
 # urlpatterns = [
@@ -12,9 +13,9 @@ from django.conf.urls.static import static
 # ]
 
 urlpatterns = [
+    path('',home_redirect,name='home'),
     path('admin/', admin.site.urls),
     path('campanias/',include('campanias.urls')),
-
 
     #Url para la vista de inventarios
    path('inventarios/', include('inventarios.urls')),
