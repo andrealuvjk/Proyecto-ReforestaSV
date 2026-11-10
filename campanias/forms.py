@@ -22,6 +22,61 @@ class CampaniaForm(forms.ModelForm):
             'fecha_inicio': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'fecha_fin': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
         }
+    def clean_titulo(self):
+        titulo = self.cleaned_data.get('titulo', '').strip()
+        
+        # Validar que no se vaya en blanco
+        if not titulo:
+            raise ValidationError("El título de la campaña es obligatorio.")
+
+        # Validar mínimo 3 letras reales
+        letras_count = sum(c.isalpha() for c in titulo)
+        if letras_count < 3:
+            raise ValidationError("El título debe contener al menos 3 letras.")
+
+        # Validar límite de caracteres
+        if len(titulo) > 150:
+            raise ValidationError("El título no puede exceder los 150 caracteres.")
+
+        # Bloquear caracteres especiales como %&#" pero permitir números acompañados de letras
+        if not re.match(r'^[a-zA-ZÁÉÍÓÚáéíóúÑñ0-9\s\-_.,]+$', titulo):
+            raise ValidationError('El título contiene caracteres especiales no permitidos (ej. %, &, #, ").')
+
+        return titulo
+
+    def clean_descripcion(self):
+        descripcion = self.cleaned_data.get('descripcion', '')
+        if descripcion:
+            descripcion = descripcion.strip()
+            if len(descripcion) > 200:
+                raise ValidationError("La descripción no puede exceder los 200 caracteres.")
+            
+            if not re.match(r'^[a-zA-ZÁÉÍÓÚáéíóúÑñ0-9\s\-_.,]*$', descripcion):
+                raise ValidationError('La descripción contiene caracteres especiales no permitidos (ej. %, &, #, ").')
+                
+        return descripcion
+
+    def clean(self):
+        cleaned_data = super().clean()
+        titulo = cleaned_data.get('titulo')
+        fecha_inicio = cleaned_data.get('fecha_inicio')
+        fecha_fin = cleaned_data.get('fecha_fin')
+
+        # 1. Validar que la fecha final no sea menor a la de inicio
+        if fecha_inicio and fecha_fin:
+            if fecha_inicio > fecha_fin:
+                self.add_error('fecha_fin', 'La fecha final no puede ser menor a la fecha de inicio.')
+
+        # 2. Validar que no se repitan campañas duplicadas (por título exacto ignorando mayúsculas)
+        if titulo:
+            query = Campania.objects.filter(titulo__iexact=titulo)
+            if self.instance and self.instance.pk:
+                query = query.exclude(pk=self.instance.pk)
+            
+            if query.exists():
+                self.add_error('titulo', 'Ya existe una campaña registrada con este mismo título.')
+
+        return cleaned_data
 
 
 class UbicacionForm(forms.ModelForm):
