@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-4">
+    <!-- Encabezado -->
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+        <div>
+            <h2 class="text-success fw-bold m-0">{{ campania.titulo }}</h2>
+            <p class="text-muted mb-0 small">
+                Responsable: <strong>{{ campania.responsable.nombre|default:campania.responsable.username }}</strong> | 
+                Duración: <strong>{{ campania.duracion_dias }} día(s)</strong>
+            </p>
+        </div>
+        <a href="{% url 'campanias:listado_campanias' %}" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left"></i> Volver al listado
+        </a>
+    </div>
+
+    <!-- Tarjetas KPI con bordes de color -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 border-start border-4 border-success shadow-sm bg-white h-100">
+                <div class="card-body">
+                    <h6 class="card-title text-muted text-uppercase small fw-bold">Árboles Plantados</h6>
+                    <h3 class="card-text text-success fw-bold m-0">{{ total_arboles }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 border-start border-4 border-info shadow-sm bg-white h-100">
+                <div class="card-body">
+                    <h6 class="card-title text-muted text-uppercase small fw-bold">Inventarios</h6>
+                    <h3 class="card-text text-info fw-bold m-0">{{ total_inventarios }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 border-start border-4 border-warning shadow-sm bg-white h-100">
+                <div class="card-body">
+                    <h6 class="card-title text-muted text-uppercase small fw-bold">Mantenimientos</h6>
+                    <h3 class="card-text text-warning fw-bold m-0">{{ total_mantenimientos }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 border-start border-4 border-danger shadow-sm bg-white h-100">
+                <div class="card-body">
+                    <h6 class="card-title text-muted text-uppercase small fw-bold">Árboles Perdidos</h6>
+                    <h3 class="card-text text-danger fw-bold m-0">{{ arboles_stats.perdidos|default:0 }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Tabla de Inventarios de esta Campaña -->
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-success text-white fw-bold py-2">
+                    Lotes de Inventario Asociados
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th># ID</th>
+                                <th>Especie</th>
+                                <th>Cantidad</th>
+                                <th>Ubicación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for inv in inventarios_list %}
+                            <tr>
+                                <td><span class="text-muted fw-bold">#{{ inv.id }}</span></td>
+                                <td>{{ inv.especie.nombre }}</td>
+                                <td><span class="badge bg-success-subtle text-success border border-success fw-bold">{{ inv.cantidad }}</span></td>
+                                <td><small>{{ inv.ubicacion.zona }} - {{ inv.ubicacion.ubicacion }}</small></td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-3">No hay inventarios registrados para esta campaña.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna Derecha: Especies y Estado de Salud -->
+        <div class="col-lg-5">
+            <!-- Desglose por Especie -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-dark text-white fw-bold py-2">
+                    Especies Sembradas
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for especie in especies_desglose %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ especie.nombre }}</span>
+                        <span class="badge bg-light text-dark border fw-bold">{{ especie.total_sembrado }} ejemplares</span>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item text-muted text-center">No hay especies registradas.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Estado de Salud de la Campaña -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-dark text-white fw-bold py-2">
+                    Estado del Bosque
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                        <span class="text-black"></i> Sanos</span>
+                        <span class="badge bg-success fs-6">{{ arboles_stats.sanos|default:0 }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                        <span class="text-black"></i> Deteriorados</span>
+                        <span class="badge bg-warning text-dark fs-6">{{ arboles_stats.deteriorados|default:0 }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-black"></i> Perdidos</span>
+                        <span class="badge bg-danger fs-6">{{ arboles_stats.perdidos|default:0 }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

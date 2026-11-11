@@ -39,6 +39,7 @@
                             <td>
                                 <!-- Se ajustó para apilarse de forma limpia o mantenerse ordenado según el espacio -->
                                 <div class="d-flex flex-column flex-xxl-row gap-1">
+                                    <a href="{% url 'campanias:detalle_campania' campania.id %}" class="btn btn-sm btn-outline-info">Ver Detalles</a>
                                     <a href="{% url 'campanias:editar_campania' campania.id %}" class="btn btn-sm btn-outline-warning text-dark text-xxl-white">Editar</a>
                                     <a href="{% url 'campanias:eliminar_campania' campania.id %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
                                 </div>

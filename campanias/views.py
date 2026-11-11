@@ -1,11 +1,14 @@
 
 from usuarios.decorators import rol_requerido
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Sum, Count, Q
 from django.contrib import messages
 from django.db.models import ProtectedError
 from django.db import IntegrityError
 from .models import Campania, Ubicacion
 from .forms import CampaniaForm, UbicacionForm
+from inventarios.models import Inventario, Especie
+from mantenimientos.models import ArbolPlantado, Mantenimiento
 
 # Create your views here.
 from .models import Campania
@@ -84,6 +87,47 @@ def eliminar_campania(request, pk):
         'campania': campania
     })
 
+def detalle_campania(request, pk):
+    campania = get_object_or_404(Campania, pk=pk)
+    
+    # 1. Obtener los inventarios vinculados a esta campaña
+    inventarios_list = campania.inventarios.select_related('especie', 'ubicacion', 'usuario').all()
+    
+    # 2. Conteo de inventarios y suma total de árboles
+    total_inventarios = inventarios_list.count()
+    total_arboles = inventarios_list.aggregate(total=Sum('cantidad'))['total'] or 0
+    
+    # 3. Métricas de salud de árboles creados para esta campaña
+    arboles_stats = ArbolPlantado.objects.filter(
+        inventario__campania=campania
+    ).aggregate(
+        sanos=Count('id', filter=Q(estado__iexact='SANO')),
+        deteriorados=Count('id', filter=Q(estado__iexact='DETERIORADO')),
+        perdidos=Count('id', filter=Q(estado__iexact='PERDIDO'))
+    )
+    
+    # 4. Total de mantenimientos registrados en los árboles de esta campaña
+    total_mantenimientos = Mantenimiento.objects.filter(
+        arbol_plantado__inventario__campania=campania
+    ).count()
+
+    # 5. Agrupación y suma de ejemplares por especie dentro de esta campaña
+    especies_desglose = Especie.objects.filter(
+        inventarios__campania=campania
+    ).annotate(
+        total_sembrado=Sum('inventarios__cantidad', filter=Q(inventarios__campania=campania))
+    ).distinct().order_by('-total_sembrado')
+
+    context = {
+        'campania': campania,
+        'inventarios_list': inventarios_list,
+        'total_inventarios': total_inventarios,
+        'total_arboles': total_arboles,
+        'arboles_stats': arboles_stats,
+        'total_mantenimientos': total_mantenimientos,
+        'especies_desglose': especies_desglose,
+    }
+    return render(request, 'campanias/detalle_campania.html', context)
 
 # --- VISTAS DE UBICACIONES ---
 @rol_requerido('ADMIN', 'RESPONSABLE','VOLUNTARIO')

@@ -9,6 +9,7 @@ urlpatterns = [
     path('crear/', views.crear_campania, name='crear_campania'),
     path('editar/<int:pk>/', views.editar_campania, name='editar_campania'), 
     path('eliminar/<int:pk>/', views.eliminar_campania, name='eliminar_campania'),
+    path('detalle/<int:pk>/', views.detalle_campania, name='detalle_campania'),
 
     # NUEVAS URLs de Ubicaciones
     path('ubicaciones/', views.ubicacion_list, name='ubicacion_list'),
