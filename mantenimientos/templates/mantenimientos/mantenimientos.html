@@ -26,6 +26,20 @@
         <label for="fecha" class="form-label">Filtrar por fecha</label>
         <input type="date" id="fecha" name="fecha" class="form-control" value="{{ fecha|default:'' }}">
     </div>
+
+    <!-- Filtro por Especie -->
+    <div class="col-12 col-sm-6 col-md-auto">
+        <label for="especie" class="form-label mb-1">Filtrar por especie</label>
+        <select id="especie" name="especie" class="form-select">
+            <option value="">Todas las especies</option>
+            {% for esp in especies %}
+                <option value="{{ esp.id }}" {% if especie_id|add:"0" == esp.id %}selected{% endif %}>
+                    {{ esp.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    
     <div class="col-12 col-sm-auto d-flex gap-2">
         <button type="submit" class="btn btn-success">Filtrar</button>
         <a href="{% url 'mantenimientos:lista' %}{% if request.GET.inventario %}?inventario={{ request.GET.inventario }}{% endif %}" class="btn btn-outline-secondary">Limpiar</a>

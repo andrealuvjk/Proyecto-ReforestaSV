@@ -3,6 +3,7 @@ from django.contrib import messages
 from usuarios.decorators import rol_requerido
 from .models import Mantenimiento, ArbolPlantado
 from .forms import MantenimientoForm, ArbolPlantadoForm
+from inventarios.models import Especie, Inventario
 
 
 def mantenimiento_list(request):
@@ -10,6 +11,9 @@ def mantenimiento_list(request):
 
     fecha = request.GET.get('fecha')
     inventario_id = request.GET.get('inventario')
+    especie_id = request.GET.get('especie')
+    
+
     if fecha:
         mantenimientos = mantenimientos.filter(fecha__date=fecha)
 
@@ -17,10 +21,17 @@ def mantenimiento_list(request):
         # Filtramos los mantenimientos cuyos árboles pertenezcan a este inventario específico
         mantenimientos = mantenimientos.filter(arbol_plantado__inventario_id=inventario_id)
 
+    if especie_id:
+        mantenimientos = mantenimientos.filter(arbol_plantado__inventario__especie_id=especie_id)
+
+    # Listas para cargar los selectores del filtro
+    especies = Especie.objects.all().order_by('nombre')
+
     return render(request, 'mantenimientos/mantenimientos.html', {
         'mantenimientos': mantenimientos,
         'fecha': fecha,
         'inventario_id': inventario_id,
+        'especies': especies,
     })
 
 
