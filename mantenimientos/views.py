@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-
+from django.contrib import messages
 from usuarios.decorators import rol_requerido
 from .models import Mantenimiento, ArbolPlantado
 from .forms import MantenimientoForm, ArbolPlantadoForm
+from inventarios.models import Especie, Inventario
 
 
 def mantenimiento_list(request):
@@ -10,6 +11,9 @@ def mantenimiento_list(request):
 
     fecha = request.GET.get('fecha')
     inventario_id = request.GET.get('inventario')
+    especie_id = request.GET.get('especie')
+    
+
     if fecha:
         mantenimientos = mantenimientos.filter(fecha__date=fecha)
 
@@ -17,10 +21,17 @@ def mantenimiento_list(request):
         # Filtramos los mantenimientos cuyos árboles pertenezcan a este inventario específico
         mantenimientos = mantenimientos.filter(arbol_plantado__inventario_id=inventario_id)
 
+    if especie_id:
+        mantenimientos = mantenimientos.filter(arbol_plantado__inventario__especie_id=especie_id)
+
+    # Listas para cargar los selectores del filtro
+    especies = Especie.objects.all().order_by('nombre')
+
     return render(request, 'mantenimientos/mantenimientos.html', {
         'mantenimientos': mantenimientos,
         'fecha': fecha,
         'inventario_id': inventario_id,
+        'especies': especies,
     })
 
 
@@ -29,9 +40,14 @@ def mantenimiento_crear(request):
         form = MantenimientoForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, '¡Mantenimiento registrado exitosamente!')
             return redirect('mantenimientos:lista')
+        else:
+            messages.error(request, 'Ocurrió un error al registrar el mantenimiento. Verifique los datos.')
     else:
         form = MantenimientoForm()
+
+    return render(request, 'mantenimientos/mantenimiento_form.html', {'form': form})
 
     return render(request, 'mantenimientos/mantenimiento_form.html', {'form': form})
 
@@ -41,7 +57,10 @@ def arbol_crear(request):
 
         if form.is_valid():
             form.save()
+            messages.success(request, '¡Árbol plantado registrado correctamente!')
             return redirect('mantenimientos:arboles_lista')
+        else:
+            messages.error(request, 'Ocurrió un error al registrar el árbol plantado.')
     else:
         form = ArbolPlantadoForm()
 
@@ -59,7 +78,10 @@ def arbol_editar(request, id):
 
         if form.is_valid():
             form.save()
+            messages.success(request, '¡Árbol plantado actualizado correctamente!')
             return redirect('mantenimientos:arboles_lista')
+        else:
+            messages.error(request, 'Ocurrió un error al actualizar el árbol plantado.')
     else:
         form = ArbolPlantadoForm(instance=arbol)
 
@@ -95,6 +117,7 @@ def arboles_lista(request):
 def arbol_eliminar(request, id):
     if request.method == 'POST':
         arbol = get_object_or_404(ArbolPlantado, id=id)
+        messages.success(request, '¡Árbol plantado eliminado correctamente!')
         arbol.delete()
 
     return redirect('mantenimientos:arboles_lista')
@@ -106,7 +129,10 @@ def mantenimiento_editar(request, pk):
         form = MantenimientoForm(request.POST, instance=mantenimiento)
         if form.is_valid():
             form.save()
+            messages.success(request, '¡Mantenimiento actualizado exitosamente!')
             return redirect('mantenimientos:lista')
+        else:
+            messages.error(request, 'Ocurrió un error al actualizar el mantenimiento.')
     else:
         form = MantenimientoForm(instance=mantenimiento)
 
@@ -119,6 +145,7 @@ def mantenimiento_editar(request, pk):
 def mantenimiento_eliminar(request, pk):
     mantenimiento = get_object_or_404(Mantenimiento, pk=pk)
     if request.method == 'POST':
+        messages.success(request, '¡Mantenimiento eliminado correctamente!')
         mantenimiento.delete()
         return redirect('mantenimientos:lista')
 
