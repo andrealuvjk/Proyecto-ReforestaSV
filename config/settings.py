@@ -10,9 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+
+
 from pathlib import Path
 import os
 from decouple import config
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,14 +24,34 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
+#ENTORNO DE RENDER
+EN_RENDER = os.environ.get('RENDER') == 'True'  
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-99!vuwwb(bjaa17ip_n5b(6sea3qkf!n(a(i4%a^2-eebd-!j8'
+#SECRET_KEY = 'django-insecure-99!vuwwb(bjaa17ip_n5b(6sea3qkf!n(a(i4%a^2-eebd-!j8'
+SECRET_KEY = config('SECRET_KEY')
+if not SECRET_KEY or SECRET_KEY == 'django-insecure':
+    raise ValueError("La variable de entorno SECRET_KEY no está configurada correctamente.")
+
+DEBUG = not EN_RENDER  # Desactiva el modo DEBUG en producción
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost'
+]
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
+
+#conexion segura cuando render termina https
+if EN_RENDER:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 # Application definition
 
@@ -54,6 +77,7 @@ LOGOUT_REDIRECT_URL = 'login'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Para servir archivos estáticos en producción
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -85,20 +109,32 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
-DATABASES = {
-     'default': {
-         'ENGINE': 'mssql',
-          'NAME': config('DB_NAME'),
-          'USER': config('DB_USER', default=''),
-          'PASSWORD': config('DB_PASSWORD', default=''),
-          'HOST': config('DB_HOST'),
-          'PORT': config('DB_PORT', default=''),
-          'OPTIONS': {
-              'driver': 'ODBC Driver 17 for SQL Server',
-              'extra_params': 'TrustServerCertificate=yes;Trusted_Connection=yes',
-         },
-     }
-}
+
+if EN_RENDER:
+        DATABASES = {
+            'default': dj_database_url.config(
+                default=os.environ.get('DATABASE_URL'),
+                env='DATABASE_URL',
+                conn_max_age=600,
+            
+            )
+        }
+else:
+        DATABASES = {
+         'default': {
+             'ENGINE': 'mssql',
+              'NAME': config('DB_NAME'),
+              'USER': config('DB_USER', default=''),
+              'PASSWORD': config('DB_PASSWORD', default=''),
+              'HOST': config('DB_HOST'),
+              'PORT': config('DB_PORT', default=''),
+              'OPTIONS': {
+                  'driver': 'ODBC Driver 17 for SQL Server',
+                  'extra_params': 'TrustServerCertificate=yes;Trusted_Connection=yes',
+             },
+         }
+    }
+
 # DATABASES = {
 #      'default': {
 #          'ENGINE': 'django.db.backends.sqlite3',
@@ -143,6 +179,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STORAGES = {
+      "default": {
+          "BACKEND": ("django.core.files.storage.FileSystemStorage"),
+      },
+      "staticfiles": {
+            "BACKEND": ("whitenoise.storage.",
+            "CompressedManifestStaticFilesStorage",)
+      }
+}
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
