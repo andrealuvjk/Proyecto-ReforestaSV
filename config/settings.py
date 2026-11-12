@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 #ENTORNO DE RENDER
-EN_RENDER = os.environ.get('RENDER') == 'True'  
+EN_RENDER = os.environ.get('RENDER') == 'true'  
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = 'django-insecure-99!vuwwb(bjaa17ip_n5b(6sea3qkf!n(a(i4%a^2-eebd-!j8'
