@@ -11,3 +11,6 @@ python manage.py collectstatic --no-input
 
 # Aplicar las migraciones de Django
 python manage.py migrate --noinput
+
+# Crear el usuario administrador si no existe
+python manage.py create_admin
